@@ -21,14 +21,18 @@ const UserSchema = new mongoose.Schema({
         type: {
             type: String,
             enum: ['Point'],
+            default: 'Point',
         },
         coordinates: {
             type: [Number],
+            default: [0, 0],
         }
     },
 }, {
         timestamps: true,
     });
+
+UserSchema.index({location: '2dsphere'});
 
 UserSchema.pre('save', async function(next){
     const hash = await bcrypt.hash(this.password, 10);

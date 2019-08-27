@@ -35,4 +35,6 @@ const LineSchema = new mongoose.Schema({
         timestamps: true,
     });
 
+LineSchema.index({location: '2dsphere'});
+
 module.exports = mongoose.model('Line', LineSchema);
