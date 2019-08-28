@@ -28,13 +28,27 @@ module.exports = {
     },
 
     async store(req, res){
-        const { name, place, location, schedules, image } = req.body;
-        // const { filename: image } = req.file;
+        const { title, place, lat, long, schedules } = req.body;
+        const { filename: image } = req.file;
+
+        const [name] = image.split('.');
+        const fileName = `${name}.jpg`;
+
+        await sharp(req.file.path)
+            .resize(500)
+            .jpeg({ quality: 70 })
+            .toFile(
+                path.resolve(req.file.destination, 'resized', fileName)
+            )
+
+        fs.unlinkSync(req.file.path);
 
         const line = await Line.create({
-            name,
+            title,
             place,
-            location,
+            location: {
+                coordinates: [lat, long],
+            },
             schedules,
             image: image,
         });

@@ -8,12 +8,13 @@ const LineController = require('./controllers/LineController');
 const CheckInController = require('./controllers/CheckInController');
 
 const routes = new express.Router();
+const upload = multer(uploadConfig);
 
 routes.post('/auth/register', AuthController.register);
 routes.post('/auth/authenticate', AuthController.authenticate);
 
 routes.get('/lines', authMiddleware, LineController.index);
-routes.post('/lines', authMiddleware, LineController.store);
+routes.post('/lines', authMiddleware, upload.single('image'), LineController.store);
 routes.post('/lines/:id/checkin', authMiddleware, CheckInController.store);
 
 module.exports = routes;

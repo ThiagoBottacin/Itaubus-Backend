@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const LineSchema = new mongoose.Schema({
-    name: String,
+    title: String,
     place: String,
     image: String,
     location: {
         type: {
             type: String,
             enum: ['Point'],
-            required: true
+            default: 'Point',
         },
         coordinates: {
             type: [Number],
-            required: true
+            required: true,
         }
     },
     schedules: {
