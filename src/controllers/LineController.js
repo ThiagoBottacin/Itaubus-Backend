@@ -5,14 +5,18 @@ const fs = require('fs');
 
 module.exports = {
     async index(req, res){
-        // const lines = await Line.find().sort('-createdAt');
+        const { lat, long } = req.query;
+
         const lines = await Line.find(
             {
                 location:
                 {
                     $near :
                   {
-                    $geometry: { type: "Point",  coordinates: [ -23.558231,-46.6162434 ] },
+                    $geometry: { 
+                        type: "Point",  
+                        coordinates: [ lat, long ] 
+                    },
                     $minDistance: 1,
                     $maxDistance: 5000
                   }
